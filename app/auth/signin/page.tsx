@@ -97,15 +97,15 @@ function SignInContent() {
       <div className="absolute inset-0">
         <div className="absolute -left-20 top-0 h-72 w-72 rounded-full bg-indigo-500/20 blur-3xl" />
         <div className="absolute bottom-0 right-0 h-80 w-80 rounded-full bg-fuchsia-500/20 blur-3xl" />
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,_rgba(59,130,246,0.12),_transparent_55%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.12),transparent_55%)]" />
       </div>
 
-      <div className="relative z-10 w-full max-w-lg">
+      <div className="relative z-10 w-full max-w-md">
         <div className="mb-6 text-center">
           <p className="text-xs uppercase tracking-[0.5em] text-indigo-300">Admin Portal</p>
-          <h1 className="mt-3 text-3xl font-semibold text-white">Sign in to continue</h1>
+          <h1 className="mt-3 text-3xl font-semibold text-white">Sign In</h1>
           <p className="mt-2 text-sm text-slate-400">
-            Access your admin dashboard and manage the system.
+            Access your admin dashboard
           </p>
         </div>
 
@@ -186,25 +186,17 @@ function SignInContent() {
             <button
               type="submit"
               disabled={loading}
-              className="group relative flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-orange-400 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 transition hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:cursor-not-allowed disabled:opacity-70"
+              className="group relative flex w-full items-center justify-center gap-2 rounded-2xl bg-linear-to-r from-indigo-500 via-purple-500 to-orange-400 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 transition hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:cursor-not-allowed disabled:opacity-70"
             >
-              <span>{loading ? 'Signing in…' : 'Sign In'}</span>
-              <svg
-                className="h-4 w-4 transition group-hover:translate-x-1"
-                viewBox="0 0 20 20"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M5 10h10M10 5l5 5-5 5"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
+              <span>{loading ? 'Signing In…' : 'Sign In'}</span>
             </button>
           </form>
+
+          <div className="mt-8 rounded-2xl border border-white/5 bg-white/5 px-4 py-3 text-center text-sm text-slate-300">
+            <Link href="/" className="font-semibold text-white hover:text-indigo-300">
+              Back to Home
+            </Link>
+          </div>
         </div>
       </div>
     </div>

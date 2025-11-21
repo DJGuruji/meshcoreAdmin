@@ -224,27 +224,31 @@ export default function UsersDashboard() {
   }
 
   return (
-    <div className="min-h-screen bg-[#030712] text-white">
-      <div className="border-b border-white/10 bg-slate-900/70 backdrop-blur-2xl">
-        <div className="mx-auto max-w-7xl px-4 py-4 sm:px-6 lg:px-8">
-          <div className="flex items-center justify-between">
-            <h1 className="text-xl font-bold">Users Management</h1>
-            <div className="flex items-center space-x-4">
-              <span className="text-sm text-slate-300">
-                Welcome, {session?.user?.name} ({session?.user?.role})
-              </span>
+    <div className="relative flex min-h-screen overflow-hidden bg-[#030712] px-4 py-10 sm:px-6 lg:px-8">
+      <div className="absolute inset-0">
+        <div className="absolute -left-20 top-0 h-72 w-72 rounded-full bg-indigo-500/20 blur-3xl" />
+        <div className="absolute bottom-0 right-0 h-80 w-80 rounded-full bg-fuchsia-500/20 blur-3xl" />
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,0.12),transparent_55%)]" />
+      </div>
+
+      <div className="relative z-10 mx-auto w-full max-w-7xl">
+        <div className="mb-8">
+          <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-xs uppercase tracking-[0.5em] text-indigo-300">Admin Portal</p>
+              <h1 className="mt-1 text-3xl font-semibold text-white">User Management</h1>
+            </div>
+            <div className="mt-4 sm:mt-0">
               <Link 
                 href="/dashboard"
-                className="rounded-lg bg-indigo-600 px-3 py-1 text-sm font-medium text-white hover:bg-indigo-700"
+                className="rounded-2xl bg-linear-to-r from-indigo-500 via-purple-500 to-orange-400 px-5 py-2 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 transition hover:scale-[1.01]"
               >
                 Back to Dashboard
               </Link>
             </div>
           </div>
         </div>
-      </div>
 
-      <main className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         <div className="rounded-[28px] border border-white/10 bg-slate-900/70 p-8 shadow-2xl shadow-black/30 backdrop-blur-2xl">
           <div className="mb-6 flex flex-col sm:flex-row sm:items-center sm:justify-between">
             <h2 className="text-2xl font-bold">User Management</h2>
@@ -314,25 +318,23 @@ export default function UsersDashboard() {
                           </span>
                         </td>
                         <td className="whitespace-nowrap px-6 py-4 text-sm">
-                          <div className="flex space-x-2">
+                          <div className="flex flex-col space-y-2">
                             {/* Promote Account Type - Only for admin and super-admin, not for self */}
                             {canPromoteAccountType() && session?.user?.id !== user._id && (
-                              <div className="relative group">
-                                <button className="rounded-lg bg-blue-600 px-3 py-1 text-xs font-medium text-white hover:bg-blue-700">
-                                  Account Type
-                                </button>
-                                <div className="absolute left-0 top-full z-10 mt-1 hidden w-48 rounded-lg bg-slate-800 p-2 shadow-lg group-hover:block">
+                              <div className="flex items-center space-x-2">
+                                <span className="text-xs text-slate-400">Account:</span>
+                                <div className="flex space-x-1">
                                   {getAccountTypes().map((type) => (
                                     <button
                                       key={type}
                                       onClick={() => handlePromoteAccountType(user._id, type, user.name)}
-                                      className={`block w-full px-3 py-2 text-left text-xs ${
+                                      className={`rounded px-2 py-1 text-xs font-medium ${
                                         user.accountType === type 
                                           ? 'bg-indigo-600 text-white' 
-                                          : 'text-slate-300 hover:bg-slate-700'
+                                          : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
                                       }`}
                                     >
-                                      {type}
+                                      {type.charAt(0).toUpperCase() + type.slice(1)}
                                     </button>
                                   ))}
                                 </div>
@@ -341,22 +343,20 @@ export default function UsersDashboard() {
                             
                             {/* Promote Role - Only for admin and super-admin, not for self */}
                             {canPromoteRole() && session?.user?.id !== user._id && (
-                              <div className="relative group">
-                                <button className="rounded-lg bg-green-600 px-3 py-1 text-xs font-medium text-white hover:bg-green-700">
-                                  Role
-                                </button>
-                                <div className="absolute left-0 top-full z-10 mt-1 hidden w-48 rounded-lg bg-slate-800 p-2 shadow-lg group-hover:block">
+                              <div className="flex items-center space-x-2">
+                                <span className="text-xs text-slate-400">Role:</span>
+                                <div className="flex space-x-1">
                                   {getRoles().map((role) => (
                                     <button
                                       key={role}
                                       onClick={() => handlePromoteRole(user._id, role, user.name)}
-                                      className={`block w-full px-3 py-2 text-left text-xs ${
+                                      className={`rounded px-2 py-1 text-xs font-medium ${
                                         user.role === role 
-                                          ? 'bg-indigo-600 text-white' 
-                                          : 'text-slate-300 hover:bg-slate-700'
+                                          ? 'bg-green-600 text-white' 
+                                          : 'bg-slate-700 text-slate-300 hover:bg-slate-600'
                                       }`}
                                     >
-                                      {role}
+                                      {role.charAt(0).toUpperCase() + role.slice(1)}
                                     </button>
                                   ))}
                                 </div>
@@ -367,7 +367,7 @@ export default function UsersDashboard() {
                             {canDeleteUser() && session?.user?.id !== user._id && (
                               <button
                                 onClick={() => handleDeleteUser(user._id, user.name)}
-                                className="rounded-lg bg-rose-600 px-3 py-1 text-xs font-medium text-white hover:bg-rose-700"
+                                className="mt-1 rounded-lg bg-rose-600 px-3 py-1 text-xs font-medium text-white hover:bg-rose-700 self-start"
                               >
                                 Delete
                               </button>
@@ -432,7 +432,7 @@ export default function UsersDashboard() {
             </>
           )}
         </div>
-      </main>
+      </div>
     </div>
   );
 }
