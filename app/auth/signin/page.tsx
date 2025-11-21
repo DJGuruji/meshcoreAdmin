@@ -186,16 +186,25 @@ function SignInContent() {
             <button
               type="submit"
               disabled={loading}
-              className="group relative flex w-full items-center justify-center gap-2 rounded-2xl bg-linear-to-r from-indigo-500 via-purple-500 to-orange-400 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 transition hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:cursor-not-allowed disabled:opacity-70"
+              className="group relative flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-indigo-500 via-purple-500 to-orange-400 px-4 py-3 text-sm font-semibold text-white shadow-lg shadow-indigo-500/30 transition hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-2 focus:ring-offset-slate-900 disabled:cursor-not-allowed disabled:opacity-70"
             >
               <span>{loading ? 'Signing In…' : 'Sign In'}</span>
             </button>
           </form>
 
-          <div className="mt-8 rounded-2xl border border-white/5 bg-white/5 px-4 py-3 text-center text-sm text-slate-300">
+          <div className="mt-8 flex flex-col gap-4 rounded-2xl border border-white/5 bg-white/5 px-4 py-3 text-center text-sm text-slate-300">
             <Link href="/" className="font-semibold text-white hover:text-indigo-300">
               Back to Home
             </Link>
+            <div className="flex justify-center gap-4 text-xs text-slate-400">
+              <Link href="/terms" className="hover:text-white">
+                Terms of Service
+              </Link>
+              <span>•</span>
+              <Link href="/privacy" className="hover:text-white">
+                Privacy Policy
+              </Link>
+            </div>
           </div>
         </div>
       </div>

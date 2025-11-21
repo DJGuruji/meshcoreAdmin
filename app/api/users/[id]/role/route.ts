@@ -3,41 +3,12 @@ import { getServerSession } from 'next-auth/next';
 import connectDB from '@/lib/db';
 import { User } from '@/lib/models';
 import { authOptions } from '@/lib/auth';
+import { sendEmail } from '@/lib/email';
 
 // Function to send email notification
 async function sendRoleChangeEmail(user: any, newRole: string, adminName: string) {
-  try {
-    // In a real implementation, you would use a service like nodemailer or a third-party email service
-    // For now, we'll just log the email content
-    console.log('===== EMAIL NOTIFICATION =====');
-    console.log(`To: ${user.email}`);
-    console.log(`Subject: Your Role Has Been Updated`);
-    console.log(`Body:`);
-    console.log(`Dear ${user.name},`);
-    console.log(``);
-    console.log(`Your role has been changed from ${user.role} to ${newRole} by ${adminName}.`);
-    console.log(``);
-    console.log(`New Role: ${newRole}`);
-    console.log(``);
-    console.log(`If you have any questions, please contact support.`);
-    console.log(``);
-    console.log(`Best regards,`);
-    console.log(`The Admin Team`);
-    console.log('=============================');
-    
-    // In a real implementation, you would send the actual email here
-    // Example with nodemailer:
-    /*
-    const nodemailer = require('nodemailer');
-    const transporter = nodemailer.createTransporter({
-      // transporter configuration
-    });
-    
-    await transporter.sendMail({
-      from: process.env.SMTP_FROM,
-      to: user.email,
-      subject: 'Your Role Has Been Updated',
-      text: `Dear ${user.name},
+  const subject = 'Your Role Has Been Updated';
+  const text = `Dear ${user.name},
 
 Your role has been changed from ${user.role} to ${newRole} by ${adminName}.
 
@@ -46,15 +17,27 @@ New Role: ${newRole}
 If you have any questions, please contact support.
 
 Best regards,
-The Admin Team`
-    });
-    */
-    
-    return { success: true };
-  } catch (error) {
-    console.error('Failed to send role change email:', error);
-    return { success: false, error: 'Failed to send email notification' };
-  }
+The Admin Team`;
+
+  const html = `
+    <div style="font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;">
+      <h2>Role Update Notification</h2>
+      <p>Dear ${user.name},</p>
+      <p>Your role has been changed from <strong>${user.role}</strong> to <strong>${newRole}</strong> by ${adminName}.</p>
+      <div style="background-color: #f3f4f6; padding: 15px; border-radius: 8px; margin: 20px 0;">
+        <p style="margin: 0;">New Role: <span style="color: #4f46e5; font-weight: bold;">${newRole}</span></p>
+      </div>
+      <p>If you have any questions, please contact support.</p>
+      <p>Best regards,<br>The Admin Team</p>
+    </div>
+  `;
+
+  return await sendEmail({
+    to: user.email,
+    subject,
+    text,
+    html,
+  });
 }
 
 export async function PUT(

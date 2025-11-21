@@ -4,6 +4,7 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import Link from 'next/link';
+import { toast } from 'sonner';
 
 export default function UsersDashboard() {
   const { data: session, status } = useSession();
@@ -66,6 +67,8 @@ export default function UsersDashboard() {
       return;
     }
     
+    const toastId = toast.loading('Deleting user...');
+
     try {
       const response = await fetch(`/api/users/${userId}`, {
         method: 'DELETE',
@@ -79,13 +82,14 @@ export default function UsersDashboard() {
         if (response.ok) {
           setUsers(data.users);
           setTotalUsers(data.total);
+          toast.success(`User "${userName}" deleted successfully`, { id: toastId });
         }
       } else {
         const data = await response.json();
-        alert(data.error || 'Failed to delete user');
+        toast.error(data.error || 'Failed to delete user', { id: toastId });
       }
     } catch (err) {
-      alert('An error occurred while deleting the user');
+      toast.error('An error occurred while deleting the user', { id: toastId });
       console.error(err);
     }
   };
@@ -96,6 +100,8 @@ export default function UsersDashboard() {
       return;
     }
     
+    const toastId = toast.loading('Updating account type...');
+
     try {
       const response = await fetch(`/api/users/${userId}/account-type`, {
         method: 'PUT',
@@ -113,13 +119,14 @@ export default function UsersDashboard() {
         if (response.ok) {
           setUsers(data.users);
           setTotalUsers(data.total);
+          toast.success(`Account type updated to "${newAccountType}"`, { id: toastId });
         }
       } else {
         const data = await response.json();
-        alert(data.error || 'Failed to update account type');
+        toast.error(data.error || 'Failed to update account type', { id: toastId });
       }
     } catch (err) {
-      alert('An error occurred while updating the account type');
+      toast.error('An error occurred while updating the account type', { id: toastId });
       console.error(err);
     }
   };
@@ -130,6 +137,8 @@ export default function UsersDashboard() {
       return;
     }
     
+    const toastId = toast.loading('Updating role...');
+
     try {
       const response = await fetch(`/api/users/${userId}/role`, {
         method: 'PUT',
@@ -147,13 +156,14 @@ export default function UsersDashboard() {
         if (response.ok) {
           setUsers(data.users);
           setTotalUsers(data.total);
+          toast.success(`Role updated to "${newRole}"`, { id: toastId });
         }
       } else {
         const data = await response.json();
-        alert(data.error || 'Failed to update role');
+        toast.error(data.error || 'Failed to update role', { id: toastId });
       }
     } catch (err) {
-      alert('An error occurred while updating the role');
+      toast.error('An error occurred while updating the role', { id: toastId });
       console.error(err);
     }
   };

@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import SessionProviderWrapper from '@/components/SessionProviderWrapper';
 import Header from '@/components/Header';
 import { Inter } from 'next/font/google';
+import { Toaster } from 'sonner';
 
 const inter = Inter({
   variable: '--font-inter',
@@ -29,6 +30,7 @@ export default function RootLayout({
               {children}
             </main>
           </div>
+          <Toaster position="top-right" richColors />
         </SessionProviderWrapper>
       </body>
     </html>
