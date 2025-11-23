@@ -46,7 +46,7 @@ export default function Home() {
           Admin Portal
         </div>
         <h1 className="mt-6 text-4xl font-semibold text-white sm:text-5xl md:text-6xl">
-          Manage your platform with <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-orange-300 bg-clip-text text-transparent">Sadasya Admin</span>
+          Manage your platform with <span className="bg-gradient-to-r from-indigo-400 via-purple-400 to-orange-300 bg-clip-text text-transparent">EchoStorm Admin</span>
         </h1>
         <p className="mx-auto mt-6 max-w-3xl text-lg text-slate-300 sm:text-xl">
           Control users, configure system settings, and view analytics from a centralized, secure dashboard.
