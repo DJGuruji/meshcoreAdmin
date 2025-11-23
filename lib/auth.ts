@@ -1,5 +1,6 @@
 import { NextAuthOptions } from "next-auth";
 import CredentialsProvider from "next-auth/providers/credentials";
+import GoogleProvider from "next-auth/providers/google";
 import connectDB from "./db";
 import { User } from "./models";
 
@@ -86,6 +87,17 @@ export const authOptions: NextAuthOptions = {
           throw error; // Re-throw to be handled by NextAuth
         }
       }
+    }),
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID!,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      authorization: {
+        params: {
+          prompt: "consent",
+          access_type: "offline",
+          response_type: "code"
+        }
+      }
     })
   ],
   session: {
@@ -93,13 +105,38 @@ export const authOptions: NextAuthOptions = {
     maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
+      // Handle Google OAuth login
+      if (account && account.type === "oauth" && user) {
+        // Check if user already exists in our database
+        await connectDB();
+        let existingUser = await User.findOne({ email: user.email });
+        
+        if (!existingUser) {
+          // User doesn't exist in database - deny access
+          throw new Error("Access denied. Admin privileges required.");
+        }
+        
+        // Check if user has admin privileges (staff, admin, or super-admin)
+        if (!['staff', 'admin', 'super-admin'].includes(existingUser.role)) {
+          throw new Error("Access denied. Admin privileges required.");
+        }
+        
+        // Update token with user info
+        token.id = existingUser._id.toString();
+        token.role = existingUser.role;
+        token.accountType = existingUser.accountType;
+        token.blocked = existingUser.blocked;
+      }
+      
+      // Handle regular credentials login
       if (user) {
         token.id = user.id;
         token.role = user.role;
         token.accountType = user.accountType;
         token.blocked = user.blocked;
       }
+      
       return token;
     },
     async session({ session, token }) {
